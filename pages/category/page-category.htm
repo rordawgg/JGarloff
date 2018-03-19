@@ -1,0 +1,46 @@
+---
+url: /category/:urlName@
+name: Category
+description: Lists the products in a category.
+action: shop:category
+template: default
+published: true
+---
+<section class="category grid-container">
+  <header>
+    <h1>{{ category.name }}</h1>
+  </header>
+
+  <div class="grid-x">
+
+    <nav class="category-sidenav cell medium-3">
+      <h4>Categories</h4>
+      {% tree categories %}
+        <ul
+          {% if tree.topLevel %}
+            class="vertical menu accordion-menu"
+            data-accordion-menu
+            data-submenu-toggle="true"
+          {% else %}
+            class="vertical menu nested"
+          {% endif %}
+          >
+          {% for category in tree.items %}
+            <li>
+              <a href="/category/{{ category.fullUrlName }}">
+                {{ category.name }}
+              </a>
+              {% branch category.children %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endtree %}
+    </nav>
+
+    <section class="category-products medium-9">
+      {{ partial('product-list', { products: products, showSort: true }) }}
+    </section>
+
+  </div>
+
+</section>
